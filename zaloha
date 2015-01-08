@@ -1,0 +1,5 @@
+
+
+dat=`date '+%y%m%d'`
+echo "Date YYMMDD:$dat."
+tar -cjvf  ART$dat.tar.bz2 *.cpp *.h Makefile zaloha README doxygen_art doc/*

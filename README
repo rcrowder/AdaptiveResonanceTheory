@@ -1,0 +1,74 @@
+Adaptive Resonance Theory (ART)
+
+It contains 4 different programs:
+art_1    -- it is an original ART 1, only for binary input (0,1)
+
+art_2A   -- it is ART 2A, real numbers input
+
+	    
+art_2A-C -- it is improved ART 2A
+
+art_distance -- it is improved ART 2A_E, distance measures among instances 
+	are based on various distances (e.g.:Euclidean,  Manhattan,...).
+	The appropriate distance can be chosen by -d parameter
+
+
+
+WINDOWS USERS
+It is a must to have installed cygwin. Under cygwin it is possible to run any 
+ART binary program. Or at least, it is necessary to have cygwin1.dll library
+copied into c:\windows
+
+
+
+CSV input
+Input file for every ART program must be in clean csv format. 
+All the lines must have the same number of columns. Empty lines
+are ignored. In csv files can be added a commentary - all lines 
+with FIRST character '#' are considered as a comment. But it has 
+to be the FIRST character otherwise it will couse problems!!!
+
+Precision
+Input examples are represented as a double (C++ type). 
+
+
+
+INSTALLING FROM THE SOURCE
+
+Required software:
+1. A C++ compiler with standard STL library.
+(probably the best possibility is gnu gcc 4.1.2 or newer)
+
+2. A mathematical library gnu gsl (it is needed only by art_distance)
+
+Both packages are freely downloadable.
+If you would like to make yourself sure that the GSL library is installed correctly:
+   1. download http://www.fi.muni.cz/~xhudik/art/gsl_test.cpp 
+   2. run command: g++ gsl_test.cpp -o gsl_test -lgsl -lgslcblas -lm
+   3. run ./gsl_test -- if result is: "J0(5) = -0.177597" -- required software
+   is installed correctly
+   Hint: maybe you will have to add path to the gsl library and to it's source codes. 
+   In this case the compilation command would look like: 
+   g++ gsl_test.cpp -o gsl_test -l/usr/local/lib -I/usr/local/include lgsla -lgslcblas -lm
+   (just change the paths according your own environment). 
+   If it is working add the same paths to the Makefile
+ 
+
+
+Install
+
+1. install gsl library
+    Under linux execute commands:
+	yum install gsl
+	yum install gsl-devel
+    NOTE: if you install it as a normal user (not root)
+    you will have to set the correct library linking.
+2. Unpack ART tar.bz2 archive in some directory.
+   Go into the directory and in command line type a command: make  
+   NOTE: If during compiling there is a similar error like:
+   art_distance_alg.cpp:6:28: error: gsl/gsl_linalg.h: No such file or directory
+   It means that your gsl (or gsl-source) is not correctly installed, or linked.
+
+It is standard make project. Maybe you will have to change some settings in 
+Makefile
+
