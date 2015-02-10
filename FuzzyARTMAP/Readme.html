@@ -1,0 +1,84 @@
+<!-- Visit studio7designs.com and opensourcetemplates.org for more website templates ::  This template was created by studio7designs.com for public use under the creative commons licence 2.5 -->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
+<head>
+
+<title>Fuzzy ARTMAP Code: Usage directions</title>
+
+<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+<meta name="keywords" content="#" />
+<meta name="googlebot" content="index, follow" />
+<meta name="language" content="en-us, english" />
+
+
+
+<link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen, projection, tv " />
+
+</head>
+
+<body>
+
+
+
+<div id="centercontent">
+
+<h3>Fuzzy ARTMAP Code Use Directions</h3>
+<p> The current folder contains the code and data required to run all the examples in the description below.</p>
+
+<p>To execute examples, execute ARTMAPgui at the MATLAB command line. From the GUI menu, select Run tab and select one of the following datasets from the dropdown menu</p>
+
+<ol>
+    <li>1: Circle in Square benchmark (sparse)</li>
+    <li>2: Circle in Square benchmark (dense)</li>
+    <li>3: Stripes benchmark (sparse)</li>
+    <li>4: Stripes benchmark (dense)</li>
+    <li>5: Checkerboard benchmark (sparse)</li>
+    <li>6: Checkerboard benchmark (dense)</li>
+    <li>7: Boston Benchmark: test on stripe 1</li>
+    <li>8: Boston Benchmark: test on stripe 2</li>
+    <li>9: Boston Benchmark: test on stripe 3</li>
+    <li>10: Boston Benchmark: test on stripe 4</li>
+    <li>11: Movie Genre Benchmark</li>
+</ol>
+<br/>
+To provide your own dataset, run fuzzyARTMAPTester<br/><br/>
+
+<b>Usage: [a,b,c] = fuzzyARTMAPTester(dataStruct)</b><br/><br/>
+
+
+
+
+
+The MATLAB struct <b>dataStruct</b> should have the following format.<br/><br/>
+
+The datastruct fields are:<br/><br/>
+
+
+        training_input: [<b>f</b> features X <b>m</b> records]<br/>
+       training_output: [<b>m</b> labels X 1]<br/>
+            test_input: [<b>f</b> features X <b>n</b> records]<br/>
+           test_output: [<b>n</b> labels X 1]<br/>
+           description: 'dataset_title'<br/>
+    descriptionVerbose: 'A more verbose description of the dataset'<br/>
+
+
+</p>
+
+
+<h3>Reference:</h3>
+<p>Carpenter, G. A., Grossberg, S., Markuzon, N., Reynolds, J.H., & Rosen, D.B. (1992)
+Fuzzy ARTMAP: A neural network architecture for incremental supervised learning of analog multidimensional maps. IEEE Transactions on Neural Networks, 3, 698-713.</p>
+
+<h3>Disclaimer:</h3>
+<p>This software is provided free of charge. As such, the authors assume no responsibility for the programs' behavior.
+ While they have been tested and used in-house for three years, no claim is made that Fuzzy ARTMAP implementations are correct or bug-free.
+They are used and provided solely for research and educational purposes. No liability, financial or otherwise, is assumed regarding any application of Fuzzy ARTMAP.</p>
+
+
+</div>
+
+
+</body>
+</html>

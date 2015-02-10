@@ -1,0 +1,199 @@
+function varargout = ARTMAPgui(varargin)
+% MYGUI Brief description of GUI.
+%       Comments displayed at the command line in response
+%       to the help command.
+
+% (Leave a blank line following the help.)
+
+%  Initialization tasks
+
+guiValues = struct('name', {'Fuzzy ARTMAP'}, ... % Number of GUI
+    'position', {[360 220 650 702]}, ... % Position of GUI on screen
+    'resize',{'on'},... % Attention gain parameter
+    'icon_location',{'..\fuzzy_ARTMAP.png'}); % Attention gain parameter
+
+
+fh = figure('Visible','off','Name',guiValues.name,'Position',guiValues.position,'Resize',guiValues.resize);
+
+set(fh,'MenuBar','none') %Hides standard menu bar
+mh_1=uimenu(fh,'Label','Model');
+mh_2=uimenu(fh,'Label','Run','Callback',{@mh2_callback});
+mh_3=uimenu(fh,'Label','Examples');
+mh_4=uimenu(fh,'Label','Articles');
+mh_5=uimenu(fh,'Label','Tutorial');
+mh_6=uimenu(fh,'Label','Code');
+mh_7=uimenu(fh,'Label','Help');
+mh_8=uimenu(fh,'Label','Exit','Callback',{@mh8_callback});
+
+% IMAGE: Set size depending on scale image
+ah_1 = axes('Parent',fh,'Units','pixels','Position',[10 10 635 635]);
+im=double(imread(guiValues.icon_location))/255;
+imshow(im);
+
+%LEGEND: Set name of GUI
+uch_1=uicontrol('Parent',fh,'Style','text','String',guiValues.name,...
+    'Position',[190 702-80 450 60],'fontsize',36,'fontName','Helvetica','fontweight','bold',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[183 46 14]/255,'horizontalalignment','left');
+%get(uch_1)
+
+%INPUTS PANEL:
+
+ph_1=uipanel('Parent',fh,'Title','Model Parameters',...
+    'units','pixels','Position',[10 702-475 300 300],'fontsize',16,'fontName','Helvetica','fontweight','bold',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[14 46 153]/255,'visible','off');
+%set(ah_1,'Position',[10 702-180 180 180]);
+
+
+%INPUT PARAMETERS:
+
+
+%=========
+desch_2 = uicontrol('Parent',ph_1,'Style','text','String','vigilance rho',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[0 0 0],'fontweight','bold','horizontalalignment','right');
+set(desch_2,'Position',get(desch_2,'position').*[1 1 0 1]+[0 0 80 0]);
+
+%get(desch_2)
+
+uch_2=uicontrol('Parent',ph_1,'Style','slider',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],...
+    'min',0,'max',1,'sliderstep',[.01 .05],'value',0,'position',get(desch_2,'position').*[ 1 1 0 0]+[100 0 120 20]);
+%========
+
+
+
+%=========
+desch_3 = uicontrol('Parent',ph_1,'Style','text','String','alpha',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[0 0 0],'horizontalalignment','right','fontweight','bold',...
+    'position',get(desch_2,'position').*[ 1 1 0 0]+[0 35*1 80 20]);
+
+uch_3=uicontrol('Parent',ph_1,'Style','edit','String','10^-3',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],'position',get(desch_3,'position').*[ 1 1 0 0]+[100 0 35 20]);
+%=========
+
+
+%=========
+desch_4 = uicontrol('Parent',ph_1,'Style','text','String','beta',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[0 0 0],'horizontalalignment','right','fontweight','bold',...
+    'position',get(desch_2,'position').*[ 1 1 0 0]+[0 35*2 80 20]);
+
+uch_4=uicontrol('Parent',ph_1,'Style','edit','String','1',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],'position',get(desch_4,'position').*[ 1 1 0 0]+[100 0 35 20]);
+%=========
+
+%=========
+desch_5 = uicontrol('Parent',ph_1,'Style','text','String','gamma',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[0 0 0],'horizontalalignment','right','fontweight','bold',...
+    'position',get(desch_2,'position').*[ 1 1 0 0]+[0 35*3 80 20]);
+
+uch_5=uicontrol('Parent',ph_1,'Style','edit','String','10^-7',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],'position',get(desch_5,'position').*[ 1 1 0 0]+[100 0 35 20]);
+%=========
+
+%=========
+desch_6 = uicontrol('Parent',ph_1,'Style','text','String','epsilon',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[0 0 0],'horizontalalignment','right','fontweight','bold',...
+    'position',get(desch_2,'position').*[ 1 1 0 0]+[0 35*4 80 20]);
+
+uch_6=uicontrol('Parent',ph_1,'Style','edit','String','0',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],'position',get(desch_6,'position').*[ 1 1 0 0]+[100 0 35 20]);
+%=========
+
+
+%=========
+desch_7 = uicontrol('Parent',ph_1,'Style','text','String','epochs',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[0 0 0],'horizontalalignment','right','fontweight','bold',...
+    'position',get(desch_2,'position').*[ 1 1 0 0]+[0 35*5 80 20]);
+
+uch_7=uicontrol('Parent',ph_1,'Style','edit','String','1',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],'position',get(desch_7,'position').*[ 1 1 0 0]+[100 0 35 20]);
+%=========
+
+
+%=========
+desch_8 = uicontrol('Parent',ph_1,'Style','text','String','Data Source',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[0 0 0],'horizontalalignment','right','fontweight','bold',...
+    'position',get(desch_2,'position').*[ 1 1 0 0]+[0 35*6 80 20]);
+
+uch_8=uicontrol('Parent',ph_1,'Style','popup','String',...
+    {'Circle in Square (sparse)','Circle in Square (dense)',...
+    'Stripes (sparse)','Stripes (dense)',...
+    'Boston (Test on strip 1)','Boston (Test on strip 2)','Boston (Test on strip 3)','Boston (Test on strip 4)'},...
+    'value',1,'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],'position',get(desch_8,'position').*[ 1 1 0 0]+[250 0 100 20]);
+%=========
+
+
+
+align([desch_2 desch_3 desch_4 desch_5 desch_6 desch_7 desch_8],'right','none');
+align([uch_2 uch_4 uch_5 uch_6 uch_2 uch_7 uch_8],'left','none');
+
+
+%========RUN PANEL=======
+
+ph_2=uipanel('Parent',fh,'Title','',...
+    'units','pixels','Position',[10 702-675 300 60],'fontsize',16,'fontName','Helvetica','fontweight','bold',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[14 46 153]/255,'visible','off');
+
+
+uch_2_1=uicontrol('Parent',ph_2,'Style','radio','String',...
+    'Step through each input presentation',...
+    'value',1,'backgroundColor',[1 1 1],'foregroundColor',[0 0 0]);
+set(uch_2_1,'Position',get(uch_2_1,'position').*[1 1 0 1]+[0 0 200 0]);
+
+
+uch_2_2=uicontrol('Parent',ph_2,'Style','push','String',...
+    'Run',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0],'position',get(uch_2_1,'position').*[ 1 1 0 0]+[220 0 40 20],'callback',{@uch_2_2});
+%=========
+
+get(uch_2_1);
+
+align([uch_2_1 uch_2_2],'top','none');
+
+
+%OUTPUT PANEL:
+
+ph_3=uipanel('Parent',fh,'Title','Output',...
+    'units','pixels','Position',[10 10 500 500],'fontsize',16,'fontName','Helvetica','fontweight','bold',...
+    'backgroundColor',[.8 .8 .8],'foregroundColor',[14 46 153]/255,'visible','off');
+
+ah_3_1 = axes('Parent',ph_3,'Position',[.01 .01 1 1]);
+
+uch_3_1=uicontrol('Parent',ph_3,'Style','push','String',...
+    'Continue',...
+    'backgroundColor',[1 1 1],'foregroundColor',[0 0 0]);
+
+
+set(fh,'Visible','on');
+set(ph_1,'Visible','off');
+set(ph_2,'Visible','off');
+set(ph_3,'Visible','off');
+%  Construct the components
+
+%  Initialization tasks
+
+%  Callbacks for ARTMAPgui
+
+%RUN (MENU)%
+    function mh2_callback(hObject,eventdata)
+set(ah_1,'Position',[10 702-180 180 180]);
+set(ph_1,'Visible','on');
+set(ph_2,'Visible','on');
+set(ph_3,'Visible','off');
+    end
+
+%EXIT%
+    function mh8_callback(hObject,eventdata)
+        display Goodbye
+        close(gcbf)
+    end
+
+%RUN (MENU)%
+    function uch2_2_callback(hObject,eventdata)
+set(ph_1,'Visible','off');
+set(ph_2,'Visible','off');
+set(ph_3,'Visible','on');
+    end
+
+%  Utility functions for ARTMAPgui
+
+end

@@ -1,0 +1,234 @@
+function varargout = NDTC_example(varargin)
+% NDTC_EXAMPLE M-file for NDTC_example.fig
+%      NDTC_EXAMPLE, by itself, creates a new NDTC_EXAMPLE or raises the existing
+%      singleton*.
+%
+%      H = NDTC_EXAMPLE returns the handle to a new NDTC_EXAMPLE or the handle to
+%      the existing singleton*.
+%
+%      NDTC_EXAMPLE('CALLBACK',hObject,eventData,handles,...) calls the local
+%      function named CALLBACK in NDTC_EXAMPLE.M with the given input arguments.
+%
+%      NDTC_EXAMPLE('Property','Value',...) creates a new NDTC_EXAMPLE or raises the
+%      existing singleton*.  Starting from the left, property value pairs are
+%      applied to the GUI before NDTC_example_OpeningFcn gets called.  An
+%      unrecognized property name or invalid value makes property application
+%      stop.  All inputs are passed to NDTC_example_OpeningFcn via varargin.
+%
+%      *See GUI Options on GUIDE's Tools menu.  Choose "GUI allows only one
+%      instance to run (singleton)".
+%
+% See also: GUIDE, GUIDATA, GUIHANDLES
+
+% Edit the above text to modify the response to help NDTC_example
+
+% Last Modified by GUIDE v2.5 10-Sep-2009 11:38:25
+
+% Begin initialization code - DO NOT EDIT
+gui_Singleton = 1;
+gui_State = struct('gui_Name',       mfilename, ...
+                   'gui_Singleton',  gui_Singleton, ...
+                   'gui_OpeningFcn', @NDTC_example_OpeningFcn, ...
+                   'gui_OutputFcn',  @NDTC_example_OutputFcn, ...
+                   'gui_LayoutFcn',  [] , ...
+                   'gui_Callback',   []);
+if nargin && ischar(varargin{1})
+    gui_State.gui_Callback = str2func(varargin{1});
+end
+
+if nargout
+    [varargout{1:nargout}] = gui_mainfcn(gui_State, varargin{:});
+else
+    gui_mainfcn(gui_State, varargin{:});
+end
+% End initialization code - DO NOT EDIT
+
+
+% --- Executes just before NDTC_example is made visible.
+function NDTC_example_OpeningFcn(hObject, eventdata, handles, varargin)
+% This function has no output args, see OutputFcn.
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+% varargin   command line arguments to NDTC_example (see VARARGIN)
+
+% Choose default command line output for NDTC_example
+handles.output = hObject;
+
+% % This object's tag is default to 'Figure1'; change it to 'mydata'
+% set(hObject,'Tag','mydata');   % move this line to the main GUI later
+% data.default = {255 40 10 50};
+% data.new = {0 0 0 0};
+% data.str = {'Lstr' 'Ldur' 'B1' 'K2'};
+% data.tag = {'edit1' 'edit3' 'edit4' 'edit5'};
+% 
+% % In the following, define each item explicitly as a data structure item
+% % Initialize them with the default values prescribed by data.default
+% % These items are declared according to the order as dictated by data.str
+% 
+% for i=1:length(data.default)
+%    eval(['data.' data.str{i} '= data.default{i};']);  
+% end
+% 
+% % Populate the editboxes with the default values. 
+% editBoxString(handles, data);
+% 
+% % Update the data structure
+% setData(data);
+
+% make all handle properties available
+set(0,'HideUndocumented','off');
+
+% Update handles structure
+guidata(hObject, handles);
+
+% UIWAIT makes NDTC_example wait for user response (see UIRESUME)
+% uiwait(handles.figure1);
+
+
+% --- Outputs from this function are returned to the command line.
+function varargout = NDTC_example_OutputFcn(hObject, eventdata, handles) 
+% varargout  cell array for returning output args (see VARARGOUT);
+% hObject    handle to figure
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Get default command line output from handles structure
+varargout{1} = handles.output;
+
+
+% --- Executes on button press in pushbutton1.
+function pushbutton1_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% data=getData;
+% for i=1:length(data.str)
+%     eval([data.str{i} '= data.' data.str{i} ';']);  
+% end
+
+% get(handles.edit1,'String')
+Lstr=str2num(get(handles.edit1,'String'));
+Ldur=str2num(get(handles.edit3,'String'));
+B1=str2num(get(handles.edit4,'String'));
+K2=str2num(get(handles.edit5,'String'));
+
+[X,Z,B]=NDTC_example_sim(Lstr,Ldur,B1,K2);
+
+%% Input
+hplot = subplot(2,2,1,'Parent',handles.plot_panel);
+plot(hplot,1:500,[Lstr*ones(round(Ldur*1000)) zeros(500-length(1:round))]);
+htitle=title('Input');
+hyl1 = ylabel('Instensity');
+set(hplot,'ylim',[0,300]);
+set(htitle,'FontWeight','bold');
+% 
+% %% plot ipsp
+% hplot = subplot(2,2,2,'Parent',handles.plot_panel);
+% plot(hplot,tv,ipsp_d);
+% htitle=title('IPSP Current');
+% hyl1 = ylabel('Volatage');
+% set(hplot,'ylim',[-6,0]);
+% set(htitle,'FontWeight','bold');
+% 
+% %% Plot spike train
+% hplot = subplot(3,1,3,'Parent',handles.plot_panel);
+% plot(hplot,tv,spike_d);
+% htitle=title('Spike Train');
+% hxl1 = xlabel('mSec');
+% hyl1 = ylabel('Volatage');
+% set(hplot,'ylim',[-100,100]);
+% %set(hyl1,'Rotation',0);
+% set(htitle,'FontWeight','bold');
+
+
+function edit1_Callback(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit1 as text
+%        str2double(get(hObject,'String')) returns contents of edit1 as a double
+update_parameter(hObject);
+
+% --- Executes during object creation, after setting all properties.
+function edit1_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit1 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit3_Callback(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit3 as text
+%        str2double(get(hObject,'String')) returns contents of edit3 as a double
+update_parameter(hObject);
+
+% --- Executes during object creation, after setting all properties.
+function edit3_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit3 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit4_Callback(hObject, eventdata, handles)
+% hObject    handle to edit4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit4 as text
+%        str2double(get(hObject,'String')) returns contents of edit4 as a double
+update_parameter(hObject);
+
+% --- Executes during object creation, after setting all properties.
+function edit4_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit4 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end
+
+
+
+function edit5_Callback(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+% Hints: get(hObject,'String') returns contents of edit5 as text
+%        str2double(get(hObject,'String')) returns contents of edit5 as a double
+update_parameter(hObject);
+
+% --- Executes during object creation, after setting all properties.
+function edit5_CreateFcn(hObject, eventdata, handles)
+% hObject    handle to edit5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    empty - handles not created until after all CreateFcns called
+
+% Hint: edit controls usually have a white background on Windows.
+%       See ISPC and COMPUTER.
+if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
+    set(hObject,'BackgroundColor','white');
+end

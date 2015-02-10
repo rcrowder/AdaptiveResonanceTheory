@@ -1,0 +1,100 @@
+function [a, b, c] = fuzzyARTMAP_examplesWrapper(varargin)
+
+if nargin==0
+    init_vals.epochs=1;
+    init_vals.rho=0;
+    init_vals.alpha=10^(-8);
+    init_vals.beta=.1;
+    init_vals.epsilon=0;
+    init_vals.gamma=10^-7;
+    init_vals.plot_steps=0;
+    init_vals.datasrc=6;
+
+    disp('Running Fuzzy ARTMAP with following values on Circle-in-Square dataset');
+
+
+
+    disp('1) Circle in Square benchmark (sparse)')
+    disp('2) Circle in Square benchmark (dense)')
+    disp('3) Stripes benchmark (sparse)')
+    disp('4) Stripes benchmark (dense)')
+    disp('5) Checkerboard benchmark (sparse)')
+    disp('6) Checkerboard benchmark (dense)')
+    disp('7) Boston Benchmark: test on stripe 1')
+    disp('8) Boston Benchmark: test on stripe 2')
+    disp('9) Boston Benchmark: test on stripe 3')
+    disp('10) Boston Benchmark: test on stripe 4')
+    disp('11) Movie Genre Benchmark')
+    disp('Data Source No.')
+    disp(init_vals.datasrc);
+    disp('No. Epochs')
+    disp(init_vals.epochs);
+    disp('Baseline vigilance')
+    disp(init_vals.rho);
+    disp('alpha')
+    disp(init_vals.alpha);
+    disp('beta')
+    disp(init_vals.beta);
+    disp('gamma')
+    disp(init_vals.gamma);
+    disp('epsilon')
+    disp(init_vals.epsilon);
+    disp('Plot each training step 1|Yes 0|No')
+    disp(init_vals.plot_steps);
+
+    tmp_value=input('Train and test Fuzzy ARTMAP with current values? y | n ','s');
+    
+    if (strmatch(lower(tmp_value),'yn')==0)
+        error('Input value must be "y" or "n"')
+    end
+
+
+
+    if (tmp_value=='n')
+        if (strmatch(lower(tmp_value),'yn')==0)
+            error('Input value must be "y" or "n"')
+        end
+        tmp_value_b=input('Only change dataset? y | n ','s');
+        if (strmatch(lower(tmp_value_b),'yn')==0)
+            error('Input value must be "y" or "n"')
+        end
+        if (tmp_value_b=='n')
+            init_vals.epochs=input('Number of epochs? ');
+            init_vals.rho=input('Baseline vigilance? ');
+            init_vals.alpha=input('alpha value? (suggested value: 10^-8) ');
+            init_vals.beta=input('beta value? (suggested value: 10^-1 fast learning) ');
+            init_vals.gamma=input('gamma value? (suggested value: 10^-8) ');
+            init_vals.epsilon=input('epsilon value? (suggested value: 0) ');
+            init_vals.plot_steps=input('Plot each training step? 0 | No, 1 | Yes) ');
+        end
+
+
+
+        disp('1) Circle in Square benchmark (sparse)')
+        disp('2) Circle in Square benchmark (dense)')
+        disp('3) Stripes benchmark (sparse)')
+        disp('4) Stripes benchmark (dense)')
+        disp('5) Checkerboard benchmark (sparse)')
+        disp('6) Checkerboard benchmark (dense)')
+        disp('7) Boston Benchmark: test on stripe 1')
+        disp('8) Boston Benchmark: test on stripe 2')
+        disp('9) Boston Benchmark: test on stripe 3')
+        disp('10) Boston Benchmark: test on stripe 4')
+        disp('11) Movie Genre Benchmark')
+        init_vals.datasrc=input('Dataset to train and test on? (1-12) ');
+
+
+    end
+    
+    clear tmp_value tmp_value_b;
+
+else
+    init_vals=varargin{1};
+    disp(init_vals)
+
+end
+
+gcf;
+%imshow('figure_CIS.jpg')
+%openfig('figure_cis.fig','reuse')
+fuzzyARTMAP_examples;
